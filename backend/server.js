@@ -1,59 +1,43 @@
+import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import path from "path";
-import cookie_parser from "cookie-parser";
-import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
-import authRoutes from './routes/auth.route.js';
-import jobRoutes from './routes/job.route.js';
+// import authRoutes from "./routes/auth.route.js";
+import jobRoutes from "./routes/job.route.js";
 import profileRoutes from "./routes/profile.route.js";
-import user_model from "./models/user.model.js";
+import auth_middleware from "./middlewares/auth.middleware.js";
 
+import job_model from "./models/job.model.js";
+import assignedJob_model from "./models/assignedJob.model.js";
 dotenv.config();
+
 const app = express();
-app.use(cookie_parser());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
-app.get("/api", (req, res) => {
-    res.send("Server is ready to accept api");
-});
-
-mongoose.connect(process.env.DB_URL || "mongodb://localhost/Freelancia");
+mongoose.connect(process.env.DB_URL);
 const db = mongoose.connection;
 
 db.on("error", () => {
-  console.log("Error while connecting to database");
+  console.log("Database Connection: FAILED");
 });
 db.once("open", () => {
-  console.log("Connected to database ", process.env.DB_URL);
-  init();
+  console.log("Database Connection: SUCCESS");
 });
 
-async function init() {
-  try {
-    const admin = await user_model.findOne({ userType: "ADMIN" });
-    if (admin) console.log("Admin Active");
-    else {
-      const new_admin = await user_model.create({
-        name: "Amritesh Anand",
-        username: "amritesh",
-        emailId: "amritesh2901@gmail.com",
-        password: bcrypt.hashSync("amritesh", 8),
-        userType: "ADMIN",
-      });
-      console.log("New Admin Created");
-    }
-  } catch (err) {
-    console.log("Error while searching ADMIN: ", err);
-  }
-}
+app.use(auth_middleware.validateToken);
 
-authRoutes(app);
-jobRoutes(app);
+// authRoutes(app);
 profileRoutes(app);
+jobRoutes(app);
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
+
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-})
+  console.log(`Server running at Port: ${port}`);
+});

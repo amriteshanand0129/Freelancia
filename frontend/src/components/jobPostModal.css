@@ -1,0 +1,41 @@
+.job-posting-container {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+}
+.job-posting-text {
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+.job-posting-text strong {
+  font-size: 1.4rem;
+  color: #04c7fc;
+}
+.btn-primary {
+  font-size: 1.1rem;
+  padding: 12px 25px;
+  border-radius: 8px;
+  background-color: #04c7fc;
+  border: none;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: #039db5;
+  transform: scale(1.05);
+}
