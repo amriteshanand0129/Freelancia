@@ -1,12 +1,12 @@
 import job_model from "../models/job.model.js";
 import jobApplication_model from "../models/jobApplications.model.js";
 import assignedJob_model from "../models/assignedJob.model.js";
-import user_model from "../models/user.model.js";
 import freelancerProfile_model from "../models/freelancerProfile.model.js";
 import clientProfile_model from "../models/clientProfile.model.js";
 import mongoose from "mongoose";
 
 const postJob = async (req, res) => {
+  const user = await clientProfile_model.findOne({ auth0_user_id: req.user.sub})
   const job = {
     title: req.body.title,
     location: req.body.location,
@@ -14,27 +14,27 @@ const postJob = async (req, res) => {
     working_hours: req.body.working_hours,
     preferred_experience: req.body.preferred_experience,
     wage: req.body.wage,
-    skills: req.body.skills,
-    qualification: req.body.qualification,
-    proposals: req.body.proposals,
-    postedBy: req.user._id,
+    skills: req.body.skills.split(", "),
+    qualification: req.body.qualification.split(", "),
+    postedBy: user._id,
   };
+  
   try {
     const job_posted = await job_model.create(job);
     try {
-      await clientProfile_model.findByIdAndUpdate(req.user.profile, { $addToSet: { jobsPosted: job_posted._id } }, { new: true });
+      await clientProfile_model.findOneAndUpdate({ auth0_user_id: req.user.sub }, { $addToSet: { jobsPosted: job_posted._id } }, { new: true });
     } catch (error) {
       console.log("Client Profile Updation for Job Posting Failed: ", error);
-      res.status(500).send({
+      return res.status(500).send({
         error: "Failed to Update Client Profile",
       });
     }
-    res.status(201).send({
+    return res.status(201).send({
       message: "Job Posted",
     });
   } catch (error) {
     console.log("Job Posting Failed ", error);
-    res.status(500).send({
+    return res.status(500).send({
       error: "Failed to Post Job",
     });
   }
@@ -42,7 +42,8 @@ const postJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
   try {
-    const jobs = await job_model.find({assigned: false}).populate("postedBy", "_id name");
+    // const jobs = await job_model.find({assigned: false});
+    const jobs = await job_model.find({assigned: false}).populate("postedBy", "name");
     res.status(200).send({
       jobs: jobs,
     });

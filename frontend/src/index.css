@@ -21,5 +21,22 @@ body {
 
 .profileIcon {
   border-radius: 100%;
-  width: 50px;
+  height: 40px;
+  width: 40px;
+}
+
+.loginButtonStyle {
+  border: none;
+  color: grey;
+  background-color: white;
+}
+
+.loginButtonStyle:hover {
+  border: none;
+  color: black;
+  background-color: white;
+}
+
+.navbar {
+  border-bottom: 1px solid rgb(223, 223, 223);
 }

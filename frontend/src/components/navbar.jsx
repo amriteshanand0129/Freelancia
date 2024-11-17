@@ -4,62 +4,79 @@ import LoginButton from "../auth/login";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth0();
+  console.log(user);
 
-  if (isAuthenticated) console.log(user);
   return (
     <div>
       <nav className="navbar navbar-expand-lg">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            Navbar
+        <div className="container-fluid d-flex justify-content-between align-items-center">
+          <a className="navbar-brand" href="/">
+            <img src="/logo.jpg" height="40px" alt="Logo" />
           </a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul className="navbar-nav">
+
+          <div className="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+            <ul className="navbar-nav gap-2">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
-                  Home
+                <a className="nav-link" aria-current="page" href="#">
+                  <h5>Home</h5>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Features
+                  <h5>Jobs</h5>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Pricing
+                  <h5>Contact Us</h5>
                 </a>
               </li>
-              {isAuthenticated ? (
-                <li className="nav-item dropdown">
-                  <a className="nav-link " href="/profile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img className="profileIcon" src={user.picture} alt="" />
+            </ul>
+          </div>
+
+          <div className="d-flex align-items-center m-2 gap-3">
+            {isAuthenticated ? (
+              <>
+                <h5>{user.name}</h5>
+                <div className="nav-item dropdown">
+                  <a className="nav-link" href="/profile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img key={user.picture} src={user.picture} referrerpolicy="no-referrer" className="profileIcon" alt="ProfilePic" />
                   </a>
-                  <ul className="dropdown-menu">
+                  <ul className="dropdown-menu dropdown-menu-end">
                     <li>
                       <a className="dropdown-item" href="/profile">
                         Profile
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+                      <a className="dropdown-item" href="/" onClick={() => logout({ logoutParams: { returnTo: window.location.origin, federated: true } })}>
                         Logout
                       </a>
                     </li>
                     <li>
                       <a className="dropdown-item" href="#">
-                        Something else here
+                        Change Password
                       </a>
                     </li>
                   </ul>
-                </li>
-              ) : (
-                <LoginButton></LoginButton>
-              )}
-            </ul>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="nav-item dropdown">
+                  <a className="nav-link" href="/login" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="/account_circle.png" className="profileIcon" alt="ProfilePic" />
+                  </a>
+                  <ul className="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a className="dropdown-item" href="/profile">
+                      <LoginButton />
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </nav>
