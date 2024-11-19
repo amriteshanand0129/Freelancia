@@ -33,8 +33,13 @@ const freelancerProfileSchema = new mongoose.Schema(
       type: String,
       enum: ["Full-time", "Part-time"],
     },
-    hourlyRate: {
-      type: Number,
+    location: {
+      type: String,
+      enum: ["Remote", "On-site"]
+    },
+    experience: {
+      type: String,
+      enum: ["BEGINNER", "INTERMEDIATE", "EXPERIENCED"]
     },
     jobs_applied: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -45,9 +50,6 @@ const freelancerProfileSchema = new mongoose.Schema(
       ref: "AssignedJobs",
     },
     reviews: {},
-    certifications: {
-      // Refer to Certifications done by Freelancer
-    },
     rating: {
       type: Number,
       default: 0,

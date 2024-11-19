@@ -6,7 +6,7 @@ import clientProfile_model from "../models/clientProfile.model.js";
 import mongoose from "mongoose";
 
 const postJob = async (req, res) => {
-  const user = await clientProfile_model.findOne({ auth0_user_id: req.user.sub})
+  const user = await clientProfile_model.findOne({ auth0_user_id: req.user.sub });
   const job = {
     title: req.body.title,
     location: req.body.location,
@@ -18,11 +18,11 @@ const postJob = async (req, res) => {
     qualification: req.body.qualification.split(", "),
     postedBy: user._id,
   };
-  
+
   try {
     const job_posted = await job_model.create(job);
     try {
-      await clientProfile_model.findOneAndUpdate({ auth0_user_id: req.user.sub }, { $addToSet: { jobsPosted: job_posted._id } }, { new: true });
+      await clientProfile_model.findOneAndUpdate({ auth0_user_id: req.user.sub }, { $addToSet: { jobs_posted: job_posted._id } }, { new: true });
     } catch (error) {
       console.log("Client Profile Updation for Job Posting Failed: ", error);
       return res.status(500).send({
@@ -42,8 +42,7 @@ const postJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
   try {
-    // const jobs = await job_model.find({assigned: false});
-    const jobs = await job_model.find({assigned: false}).populate("postedBy", "name");
+    const jobs = await job_model.find({ assigned: false }).populate("postedBy", "name").sort({ createdAt: -1 });
     res.status(200).send({
       jobs: jobs,
     });
@@ -56,9 +55,10 @@ const getJobs = async (req, res) => {
 };
 
 const applyJob = async (req, res) => {
+  const user = await freelancerProfile_model.findOne({ auth0_user_id: req.user.sub })
   if (req.params.job_id) {
     const job_id = new mongoose.Types.ObjectId(req.params.job_id);
-
+    console.log(user);
     try {
       if (!(await job_model.findOne({ _id: job_id }))) {
         return res.status(400).send({
@@ -66,14 +66,14 @@ const applyJob = async (req, res) => {
         });
       }
       let jobApplication = await jobApplication_model.findOne({ job_id: job_id });
-      const user = req.user;
       if (jobApplication) {
         if (!jobApplication.applicants.includes(user._id)) {
-          jobApplication.applicants.push(user.profile);
+          jobApplication.applicants.push(user._id);
           await jobApplication.save();
           await job_model.findByIdAndUpdate(job_id, { $inc: { proposals: 1 } }, { new: true });
+
           try {
-            await freelancerProfile_model.findByIdAndUpdate(user.profile, { $addToSet: { jobsApplied: job_id } }, { new: true });
+            await freelancerProfile_model.findOneAndUpdate({ auth0_user_id: req.user.sub }, { $addToSet: { jobs_applied: job_id } }, { new: true });
           } catch (error) {
             console.log("Freelancer Profile Updation for Job Application Failed: ", error);
             res.status(500).send({
@@ -91,12 +91,12 @@ const applyJob = async (req, res) => {
       } else {
         jobApplication = new jobApplication_model({
           job_id: job_id,
-          applicants: [user.profile],
+          applicants: [user._id],
         });
         await jobApplication.save();
         await job_model.findByIdAndUpdate(job_id, { $inc: { proposals: 1 } }, { new: true });
         try {
-          await freelancerProfile_model.findByIdAndUpdate(user.profile, { $addToSet: { jobsApplied: job_id } }, { new: true });
+          await freelancerProfile_model.findOneAndUpdate({ auth0_user_id: req.user.sub }, { $addToSet: { jobs_applied: job_id } }, { new: true });
         } catch (error) {
           console.log("Freelancer Profile Updation for Job Application Failed: ", error);
           res.status(500).send({

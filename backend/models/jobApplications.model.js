@@ -7,7 +7,7 @@ const jobApplicationSchema = new mongoose.Schema({
     },
     applicants: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'freelancerProfile'
+        ref: 'freelancer_profiles'
     }
 }, {timestamps : true, versionKey : false});
 

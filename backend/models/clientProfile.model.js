@@ -14,6 +14,15 @@ const clientProfileSchema = new mongoose.Schema(
     bio: {
       type: String,
     },
+    linkedIn: {
+      type: String,
+    },
+    twitter: {
+      type: String,
+    },
+    languages: {
+      type: [String],
+    },
     jobs_posted: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Jobs",

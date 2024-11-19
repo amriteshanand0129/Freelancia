@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import Job from "./job"; 
+import Buffer from "./buffer";
+import axios from "axios";
+import Job from "./job";
 
-const JobList = () => {
+const JobList = ({applyJob}) => {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const [jobs, setJobs] = useState([]);
 
@@ -30,10 +31,14 @@ const JobList = () => {
     }
   }, [isAuthenticated]);
 
+  if (jobs.length == 0) {
+    return <Buffer></Buffer>;
+  }
+
   return (
     <div>
       {jobs.map((job) => (
-        <Job key={job._id} job={job} />
+        <Job key={job._id} job={job} applyJob={applyJob}/>
       ))}
     </div>
   );

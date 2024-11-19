@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
-import request from "request";
 dotenv.config();
 
 const client = jwksClient({
@@ -23,6 +22,7 @@ function getKey(header, callback) {
 const validateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    console.log("Unauthenticated Access")
     return res.status(401).send({ error: "Unauthenticated Access" });
   }
 

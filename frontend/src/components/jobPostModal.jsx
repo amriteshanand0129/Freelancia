@@ -1,38 +1,6 @@
 import React from "react";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import "./jobPostModal.css";
-const JobPostModal = () => {
-  const { getAccessTokenSilently, user, isAuthenticated, isLoading } = useAuth0();
-
-  const postJob = async (event) => {
-    event.preventDefault();
-    const Job = {
-      title: event.target.title.value,
-      description: event.target.description.value,
-      skills: event.target.skills.value,
-      qualification: event.target.qualification.value,
-      location: event.target.location.value,
-      preferred_experience: event.target.experience.value,
-      working_hours: event.target.working_hours.value,
-      wage: event.target.wage.value,
-    };
-    console.log(Job);
-
-    try {
-      const accessToken = await getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      });
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/postJob`, Job, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log("Failed to Post Job", error);
-    }
-  };
+const JobPostModal = ({ postJob }) => {
   return (
     <>
       <div className="job-posting-container">
@@ -45,6 +13,7 @@ const JobPostModal = () => {
           Post Job
         </button>
       </div>
+
       <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-scrollable" role="document">
           <div className="modal-content">
@@ -52,7 +21,7 @@ const JobPostModal = () => {
               <h5 className="modal-title" id="exampleModalLabel">
                 Post New Job
               </h5>
-              <button type="button" className="btn-close" data-dismiss="modal" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <form onSubmit={postJob} id="jobPostForm">

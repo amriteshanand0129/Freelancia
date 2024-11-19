@@ -8,11 +8,6 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -39,4 +34,22 @@ body {
 
 .navbar {
   border-bottom: 1px solid rgb(223, 223, 223);
+  padding-right: 10px;
+}
+
+.nav-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navbar .d-flex h5 {
+  margin-top: 8px;
+}
+
+.message {
+  width: 50%;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 0px;
 }

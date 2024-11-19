@@ -1,0 +1,37 @@
+.job_description {
+   border: 1px solid rgb(183, 183, 183);
+   padding: 20px;
+   border-radius: 10px;
+   margin-top: 10px;
+   margin-bottom: 10px;
+   position: relative;
+}
+
+.job_concise_card {
+    position: relative;
+    padding-bottom: 50px; /* Add padding for space for the button */
+  }
+
+.time-posted {
+    display: flex;
+    justify-content: right;
+}
+
+.application-button {
+    background-color: #04c7fc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    right: 10px;
+  }
+  
+  .application-button:hover {
+    background-color: #0391c6;
+  }
+  
