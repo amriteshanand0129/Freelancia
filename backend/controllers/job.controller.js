@@ -58,7 +58,6 @@ const applyJob = async (req, res) => {
   const user = await freelancerProfile_model.findOne({ auth0_user_id: req.user.sub })
   if (req.params.job_id) {
     const job_id = new mongoose.Types.ObjectId(req.params.job_id);
-    console.log(user);
     try {
       if (!(await job_model.findOne({ _id: job_id }))) {
         return res.status(400).send({

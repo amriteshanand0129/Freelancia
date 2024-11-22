@@ -1,0 +1,19 @@
+.applicant {
+  border: 1px solid rgb(183, 183, 183);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.name {
+  font-size: large;
+}
+
+.experience {
+  float: right;
+}
+
+.buttons {
+  background-color: black;
+  padding: 10px;
+}

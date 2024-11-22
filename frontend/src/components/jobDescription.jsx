@@ -1,12 +1,12 @@
-import "./JobDescription.css";
+import "../css/JobDescription.css";
 import React, { useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { userContext } from "../../context/userContext.jsx";
 import axios from "axios";
 import Buffer from "./buffer";
 import Applicant from "./applicant";
 
-const JobDescription = ({ job, message, setMessage }) => {
-  const { user, getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
+const JobDescription = ({ job, message, setMessage, viewOnly }) => {
+  const { user, accessToken, isAuthenticated, isLoading } = userContext();
   const [applications, setApplications] = useState([]);
   const [fetchingApplications, setFetchingApplications] = useState(false);
 
@@ -20,10 +20,6 @@ const JobDescription = ({ job, message, setMessage }) => {
   const viewApplications = async () => {
     setFetchingApplications(true);
     try {
-      const accessToken = await getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      });
-
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/getJobApplications/${job._id}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -79,7 +75,7 @@ const JobDescription = ({ job, message, setMessage }) => {
           <div className="proposals-count">
             Proposals: <strong>{job.proposals}</strong>
           </div>
-          {user.userType == "CLIENT" && (
+          {user.userType == "CLIENT" && !viewOnly && (
             <button className="application-button" data-bs-toggle="modal" data-bs-target="#applicationsModal" onClick={() => viewApplications(job._id)}>
               See Applications
             </button>
@@ -97,11 +93,11 @@ const JobDescription = ({ job, message, setMessage }) => {
             </div>
             <div className="modal-body">
               {!fetchingApplications ? (
-                applications == null || applications.length === 0 ? ( // Check for empty array
+                applications == null || applications.length === 0 ? ( 
                   <h2 style={{ textAlign: "center" }}>No applications yet</h2>
                 ) : (
                   applications.map((element) => (
-                    <Applicant key={element._id} applicant={element}></Applicant> // Ensure a key is provided
+                    <Applicant key={element._id} applicant={element}></Applicant> 
                   ))
                 )
               ) : (

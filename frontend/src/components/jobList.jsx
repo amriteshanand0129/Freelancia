@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { userContext } from "../../context/userContext.jsx";
 import Buffer from "./buffer";
 import axios from "axios";
 import Job from "./job";
 
-const JobList = ({applyJob}) => {
-  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+const JobList = ({ applyJob }) => {
+  const { accessToken, isAuthenticated } = userContext();
   const [jobs, setJobs] = useState([]);
 
   const getJobsList = async () => {
     try {
-      const accessToken = await getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      });
-
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/getJobs`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -36,9 +32,9 @@ const JobList = ({applyJob}) => {
   }
 
   return (
-    <div>
+    <div className="jobList">
       {jobs.map((job) => (
-        <Job key={job._id} job={job} applyJob={applyJob}/>
+        <Job key={job._id} job={job} applyJob={applyJob} />
       ))}
     </div>
   );

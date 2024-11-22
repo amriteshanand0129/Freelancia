@@ -1,15 +1,13 @@
-import "./Client_Profile.css";
+import "../css/Client_Profile.css";
 import React, { useState, useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { userContext } from "../../context/userContext.jsx";
 import axios from "axios";
-import Navbar from "../components/navbar";
 import Buffer from "../components/buffer";
 import Message from "../components/message";
 import JobDescription from "../components/jobDescription";
 
 const Client_Profile = () => {
-
-  const { user, getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
+  const { user, accessToken, isAuthenticated, isLoading } = userContext();
   const [profile, setProfile] = useState(null);
   const [message, setMessage] = useState(null);
 
@@ -22,10 +20,6 @@ const Client_Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const accessToken = await getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      });
-
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/profile`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -67,10 +61,6 @@ const Client_Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const accessToken = await getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      });
-
       const profileUpdation_response = await axios.post(
         `${import.meta.env.VITE_API_URL}/updateProfile`,
         { ...formData },
@@ -94,7 +84,6 @@ const Client_Profile = () => {
   if (isLoading) {
     return (
       <>
-        <Navbar></Navbar>
         <Buffer></Buffer>
       </>
     );
@@ -107,7 +96,6 @@ const Client_Profile = () => {
   if (!profile) {
     return (
       <>
-        <Navbar></Navbar>
         <Buffer></Buffer>
       </>
     );
@@ -115,7 +103,6 @@ const Client_Profile = () => {
 
   return (
     <>
-      <Navbar />
       {message && <Message message={message} setMessage={setMessage}></Message>}
       <div className="freelancer-profile">
         <div className="profile-header">
@@ -238,13 +225,15 @@ const Client_Profile = () => {
               ) : (
                 <p>No reviews available</p>
               )}
-                <h2>Rating:</h2> {profile.rating.toFixed(1)} ({profile.ratingCount} reviews)
+              <h2>Rating:</h2> {profile.rating.toFixed(1)} ({profile.ratingCount} reviews)
             </div>
           </div>
         </div>
       </div>
     </>
   );
+
+  return <h2>profile</h2>;
 };
 
 export default Client_Profile;

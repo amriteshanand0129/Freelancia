@@ -1,5 +1,5 @@
 import React from "react";
-import "./Buffer.css";
+import "../css//Buffer.css";
 
 const Buffer = () => {
   return (

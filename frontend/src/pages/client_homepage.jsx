@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Navbar from "../components/navbar";
+import axios from "axios";
+import { userContext } from "../../context/userContext.jsx";
 import JobPostModal from "../components/jobPostModal";
 import JobList from "../components/jobList";
 import Message from "../components/message";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import Buffer from "../components/buffer";
+
 const Client_Homepage = () => {
-  const { getAccessTokenSilently, user, isAuthenticated, isLoading } = useAuth0();
+  const { accessToken, user, isAuthenticated, isLoading } = userContext();
   const [message, setMessage] = useState(null);
 
   const postJob = async (event) => {
@@ -28,15 +28,12 @@ const Client_Homepage = () => {
     modalInstance.hide();
 
     try {
-      const accessToken = await getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      });
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/postJob`, Job, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      
+
       setMessage({ message: "Job posted successfully!" });
     } catch (error) {
       console.log("Failed to Post Job", error);
@@ -47,7 +44,6 @@ const Client_Homepage = () => {
   if (!user) {
     return (
       <>
-        <Navbar></Navbar>
         <Buffer></Buffer>
       </>
     );
@@ -55,7 +51,6 @@ const Client_Homepage = () => {
 
   return (
     <>
-      <Navbar></Navbar>
       {message && <Message message={message} setMessage={setMessage}></Message>}
       <JobPostModal postJob={postJob}></JobPostModal>
       <JobList></JobList>

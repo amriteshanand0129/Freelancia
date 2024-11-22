@@ -1,0 +1,101 @@
+.job-card {
+  width: 70%;
+  margin: 16px auto;
+  padding: 24px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background: #fdfdfd;
+  transition: box-shadow 0.3s ease;
+}
+
+.job-card:hover {
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.job-title {
+  font-size: 1.4em;
+  font-weight: 600;
+  color: #333;
+}
+
+.time-posted {
+  font-size: 0.875em;
+  color: #888;
+}
+
+.posted-by {
+  font-size: 1em;
+  color: #555;
+  margin-top: 4px;
+}
+
+.job-description {
+  margin: 12px 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+.job-details {
+  margin: 16px 0;
+}
+
+.job-tags {
+  margin: 8px 0;
+}
+
+.tag-title {
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.tag {
+  display: inline-block;
+  background-color: #e8e8e8;
+  color: #333;
+  border-radius: 12px;
+  padding: 6px 10px;
+  font-size: 0.85em;
+  margin: 4px 4px 0 0;
+}
+
+.proposals-count {
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.95em;
+  color: #444;
+}
+
+.job-card {
+  position: relative; 
+}
+
+.apply-button {
+  background-color: #04c7fc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+.apply-button:hover {
+  background-color: #0391c6;
+}

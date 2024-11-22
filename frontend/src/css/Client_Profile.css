@@ -119,17 +119,17 @@ ul li {
 
 @media (max-width: 768px) {
   .freelancer-profile {
-    width: 100%; /* Adjust the container to full width on small screens */
+    width: 100%;
   }
 
   .left-column,
   .right-column {
-    width: 100%; /* Make both columns take up full width */
-    display: block; /* Stack columns vertically */
+    width: 100%;
+    display: block;
   }
 
   .profile-header {
-    width: 100%; /* Ensure header takes full width */
+    width: 100%;
   }
 }
 

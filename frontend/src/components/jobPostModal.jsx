@@ -1,5 +1,6 @@
 import React from "react";
-import "./jobPostModal.css";
+import "../css/jobPostModal.css";
+
 const JobPostModal = ({ postJob }) => {
   return (
     <>

@@ -25,6 +25,21 @@ const viewProfile = async (req, res) => {
   }
 };
 
+const viewPublicProfile = async(req, res) => {
+  try {
+    const user_profile = await freelancerProfile_model.findById(req.params.id).populate("jobs_applied").populate("jobs_undertaken");
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).send({
+      profile: user_profile,
+    });
+  } catch (error) {
+    console.log("Error while fetching profile: ", error);
+    res.status(500).send({
+      error: "Cannot fetch profile details",
+    });
+  }
+}
+
 const updateProfile = async (req, res) => {
   if (req.user.userType === "FREELANCER") {
     try {
@@ -76,6 +91,7 @@ const updateProfile = async (req, res) => {
 
 const profile_controller = {
   viewProfile: viewProfile,
+  viewPublicProfile: viewPublicProfile,
   updateProfile: updateProfile,
 };
 

@@ -1,10 +1,9 @@
 import React from "react";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
-import "./Job.css";
+import "../css/Job.css";
+import { userContext } from "../../context/userContext.jsx";
 
 const Job = ({ job, applyJob }) => {
-  const { user, getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
+  const { user, accessToken, isAuthenticated, isLoading } = userContext();
 
   const timeSincePosted = (date) => {
     const diff = Date.now() - new Date(date).getTime();
@@ -56,7 +55,11 @@ const Job = ({ job, applyJob }) => {
       <div className="proposals-count">
         Proposals: <strong>{job.proposals}</strong>
       </div>
-      {user.userType == "FREELANCER" && <button className="apply-button" onClick={() => applyJob(job._id)}>Apply</button>}
+      {user.userType == "FREELANCER" && (
+        <button className="apply-button" onClick={() => applyJob(job._id)}>
+          Apply
+        </button>
+      )}
     </div>
   );
 };

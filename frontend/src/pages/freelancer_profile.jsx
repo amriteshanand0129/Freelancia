@@ -1,15 +1,16 @@
-import "./Client_Profile.css";
+import "../css/Freelancer_Profile.css";
 import React, { useState, useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import Navbar from "../components/navbar";
+import { useParams } from "react-router-dom";
+import { userContext } from "../../context/userContext.jsx";
 import Buffer from "../components/buffer";
 import axios from "axios";
 import Message from "../components/message";
 import JobDescription from "../components/jobDescription";
 
-const Client_Profile = () => {
-  const { user, getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
+const Freelancer_Profile = ({ viewOnly }) => {
+  const { user, accessToken, isAuthenticated, isLoading } = userContext();
 
+  const { id } = useParams();
   const [profile, setProfile] = useState(null);
   const [message, setMessage] = useState(null);
 
@@ -28,20 +29,30 @@ const Client_Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const fetchProfile = async () => {
-    try {
-      const accessToken = await getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      });
-
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/profile`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setProfile(response.data.profile);
-    } catch (err) {
-      console.error("Error while fetching profile data:", err);
-      setMessage({ error: "Failed to fetch profile data! Please try again." });
+    if (viewOnly) {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/profile/${id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setProfile(response.data.profile);
+      } catch (err) {
+        console.error("Error while fetching profile data:", err);
+        setMessage({ error: "Failed to fetch profile data! Please try again." });
+      }
+    } else {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/profile`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setProfile(response.data.profile);
+      } catch (err) {
+        console.error("Error while fetching profile data:", err);
+        setMessage({ error: "Failed to fetch profile data! Please try again." });
+      }
     }
   };
 
@@ -79,10 +90,6 @@ const Client_Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const accessToken = await getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      });
-
       const profileUpdation_response = await axios.post(
         `${import.meta.env.VITE_API_URL}/updateProfile`,
         { ...formData },
@@ -106,7 +113,6 @@ const Client_Profile = () => {
   if (isLoading) {
     return (
       <>
-        <Navbar></Navbar>
         <Buffer></Buffer>
       </>
     );
@@ -119,7 +125,6 @@ const Client_Profile = () => {
   if (!profile) {
     return (
       <>
-        <Navbar></Navbar>
         <Buffer></Buffer>
       </>
     );
@@ -127,17 +132,16 @@ const Client_Profile = () => {
 
   return (
     <>
-      <Navbar />
       {message && <Message message={message} setMessage={setMessage}></Message>}
       <div className="freelancer-profile">
         <div className="profile-header">
           <div className="profile-info">
-            <img key={user.picture} src={user.picture} referrerPolicy="no-referrer" className="profileIcon_large" alt="ProfilePic" />
+            {!viewOnly && <img key={user.picture} src={user.picture} referrerPolicy="no-referrer" className="profileIcon_large" alt="ProfilePic" />}
             <div>
               <h3>{profile.name}</h3>
               <p>{profile.email}</p>
             </div>
-            <img src="/edit.png" alt="" className="editButton" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => setIsEditing(true)} />
+            {!viewOnly && <img src="/edit.png" alt="" className="editButton" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => setIsEditing(true)} />}
           </div>
         </div>
         <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -304,7 +308,7 @@ const Client_Profile = () => {
             <div className="jobs-section">
               <h2>Jobs Applied: {profile.jobs_applied.length}</h2>
               {profile.jobs_applied.map((element) => (
-                <JobDescription key={element._id} job={element}></JobDescription>
+                <JobDescription key={element._id} job={element} viewOnly={viewOnly}></JobDescription>
               ))}
               <h2>Jobs Undertaken: {profile.jobs_undertaken.length}</h2>
             </div>
@@ -331,4 +335,4 @@ const Client_Profile = () => {
   );
 };
 
-export default Client_Profile;
+export default Freelancer_Profile;
