@@ -9,12 +9,12 @@
 
 .job_concise_card {
   position: relative;
-  padding-bottom: 50px;
+  padding-bottom: 5px;
 }
 
-.time-posted {
+.job_concise_header {
   display: flex;
-  justify-content: right;
+  justify-content:space-between;
 }
 
 .application-button {

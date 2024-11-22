@@ -288,15 +288,15 @@ const Freelancer_Profile = ({ viewOnly }) => {
 
             {/* Availability and Rate */}
             <div className="availability-rate">
-              <p>
-                <strong>Availability:</strong> {profile.availability}
-              </p>
-              <p>
-                <strong>Experience:</strong> {profile.experience}
-              </p>
-              <p>
-                <strong>Location:</strong> {profile.location}
-              </p>
+              <h2>
+                Availability: <li className="tags">{profile.availability}</li>
+              </h2>
+              <h2>
+                Experience: <li className="tags">{profile.experience}</li>
+              </h2>
+              <h2>
+                Location: <li className="tags">{profile.location}</li>
+              </h2>
             </div>
           </div>
 
@@ -319,7 +319,7 @@ const Freelancer_Profile = ({ viewOnly }) => {
                 <ul>
                   {Object.entries(profile.reviews).map(([reviewer, review], index) => (
                     <li key={index}>
-                      <strong>{reviewer}:</strong> {review}
+                      {reviewer}: {review}
                     </li>
                   ))}
                 </ul>

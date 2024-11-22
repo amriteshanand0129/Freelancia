@@ -1,6 +1,7 @@
 import "../css/JobDescription.css";
 import React, { useState } from "react";
 import { userContext } from "../../context/userContext.jsx";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Buffer from "./buffer";
 import Applicant from "./applicant";
@@ -9,6 +10,14 @@ const JobDescription = ({ job, message, setMessage, viewOnly }) => {
   const { user, accessToken, isAuthenticated, isLoading } = userContext();
   const [applications, setApplications] = useState([]);
   const [fetchingApplications, setFetchingApplications] = useState(false);
+
+  const navigate = useNavigate();
+  const visitProfile = (id) => {
+    const modalElement = document.getElementById("applicationsModal");
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    modalInstance.hide();
+    navigate(`/profile/user/${id}`);
+  };
 
   const timeSincePosted = (date) => {
     const diff = Date.now() - new Date(date).getTime();
@@ -39,47 +48,43 @@ const JobDescription = ({ job, message, setMessage, viewOnly }) => {
         <div className="job_concise_card">
           <div className="job_concise_header">
             <h2 className="job_concise_title">{job.title}</h2>
-            <span className="time-posted">{timeSincePosted(job.createdAt)}</span>
+            <span className="time-posted"><strong>&#40;{job.location}&#41;</strong> {timeSincePosted(job.createdAt)}</span>
           </div>
           <p className="job_concise_description">{job.description}</p>
           <div className="job_concise_details">
             <div className="job_concise_tags">
-              <div className="tag-title">Skills:</div>
+              <h2>Skills:
               {job.skills.map((skill, index) => (
                 <span key={index} className="tag">
                   {skill}
                 </span>
               ))}
+              </h2>
             </div>
             <div className="job_concise_tags">
-              <div className="tag-title">Qualifications:</div>
+              <h2>Qualifications:
               {job.qualification.map((qual, index) => (
                 <span key={index} className="tag">
                   {qual}
                 </span>
               ))}
+              </h2>
             </div>
             <p>
-              Location: <strong>{job.location}</strong>
+              Preferred Experience: {job.preferred_experience}
             </p>
             <p>
-              Preferred Experience: <strong>{job.preferred_experience}</strong>
-            </p>
-            <p>
-              Daily Working Hours: <strong>{job.working_hours} hrs</strong>
-            </p>
-            <p>
-              Pay: &#8377;<strong>{job.wage}</strong>
+              Pay: &#8377;<strong>{job.wage}</strong> &#40; {job.working_hours} hrs/day &#41;
             </p>
           </div>
           <div className="proposals-count">
             Proposals: <strong>{job.proposals}</strong>
-          </div>
           {user.userType == "CLIENT" && !viewOnly && (
             <button className="application-button" data-bs-toggle="modal" data-bs-target="#applicationsModal" onClick={() => viewApplications(job._id)}>
-              See Applications
+              View Applications
             </button>
           )}
+          </div>
         </div>
       </div>
       <div className="modal fade" id="applicationsModal" tabIndex="-1" role="dialog" aria-labelledby="applicationsModalLabel" aria-hidden="true">
@@ -91,19 +96,7 @@ const JobDescription = ({ job, message, setMessage, viewOnly }) => {
               </h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div className="modal-body">
-              {!fetchingApplications ? (
-                applications == null || applications.length === 0 ? ( 
-                  <h2 style={{ textAlign: "center" }}>No applications yet</h2>
-                ) : (
-                  applications.map((element) => (
-                    <Applicant key={element._id} applicant={element}></Applicant> 
-                  ))
-                )
-              ) : (
-                <Buffer />
-              )}
-            </div>
+            <div className="modal-body">{!fetchingApplications ? applications == null || applications.length === 0 ? <h2 style={{ textAlign: "center" }}>No applications yet</h2> : applications.map((element) => <Applicant key={element._id} applicant={element} visitProfile={visitProfile}></Applicant>) : <Buffer />}</div>
           </div>
         </div>
       </div>

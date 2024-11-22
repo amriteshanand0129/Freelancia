@@ -13,7 +13,6 @@
   float: right;
 }
 
-.buttons {
-  background-color: black;
-  padding: 10px;
+.btn {
+  margin-right: 10px;
 }
