@@ -1,7 +1,9 @@
-import React from "react";
+
+import React, { useState } from "react";
 import "../css/jobPostModal.css";
 
 const JobPostModal = ({ postJob }) => {
+  const [posting, setPosting] = useState(false);
   return (
     <>
       <div className="job-posting-container">
@@ -88,9 +90,11 @@ const JobPostModal = ({ postJob }) => {
                   <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                   </button>
-                  <button type="submit" className="btn btn-success">
+                  { posting == false ? ( <button type="submit" className="btn btn-success">
                     Post
-                  </button>
+                  </button> ) : (
+                    <div className="post-button-buffer"></div>
+                  ) }
                 </div>
               </form>
             </div>

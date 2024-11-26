@@ -7,28 +7,10 @@ const assignedJobSchema = new mongoose.Schema({
         trim : true,
         maxlength : 150,
     },
-    location : {
-        type : String,
-        required : true,
-        trim : true,
-    },
     description : {
         type : String,
         required : true,
         trim : true,
-    },
-    working_hours : {
-        type: Number,
-        required: true,
-        trim: true
-    },
-    preferred_experience : {
-        type: String,
-        enum : ["BEGINNER", "INTERMEDIATE", "EXPERIENCED"]
-    },
-    wage : {
-        type : Number,
-        required : true
     },
     skills : {
         type : [String],
@@ -36,8 +18,26 @@ const assignedJobSchema = new mongoose.Schema({
     qualification : {
         type: [String]
     },
-    postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    location : {
+        type : String,
+        enum: ["On-site", "Remote"],
+    },
+    preferred_experience : {
+        type: String,
+        enum : ["BEGINNER", "INTERMEDIATE", "EXPERIENCED"]
+    },
+    working_hours : {
+        type: Number,
+        required: true,
+        trim: true
+    },
+    wage : {
+        type : Number,
+        required : true
+    },
+    postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'client_profiles' },
+    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'freelancer_profiles' },
+    assignedFreelancer: { type: String },
     progressPercent: {
         type : Number,
         default : 0,

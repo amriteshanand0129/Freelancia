@@ -9,6 +9,8 @@ import JobDescription from "../components/jobDescription";
 
 const Freelancer_Profile = ({ viewOnly }) => {
   const { user, accessToken, isAuthenticated, isLoading } = userContext();
+  const [ dropdown1, setDropdown1 ] = useState(true);
+  const [ dropdown2, setDropdown2 ] = useState(true);
 
   const { id } = useParams();
   const [profile, setProfile] = useState(null);
@@ -88,6 +90,7 @@ const Freelancer_Profile = ({ viewOnly }) => {
   };
 
   const handleSubmit = async (e) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     e.preventDefault();
     try {
       const profileUpdation_response = await axios.post(
@@ -306,11 +309,16 @@ const Freelancer_Profile = ({ viewOnly }) => {
               <div className="bio-content">{profile.bio}</div>
             </div>
             <div className="jobs-section">
-              <h2>Jobs Applied: {profile.jobs_applied.length}</h2>
-              {profile.jobs_applied.map((element) => (
+              <h2 className="job-classification" onClick={() => setDropdown1((prev) => !prev)}>Jobs Applied: {profile.jobs_applied.length}</h2>
+              
+              { dropdown1 && profile.jobs_applied.map((element) => (
                 <JobDescription key={element._id} job={element} viewOnly={viewOnly}></JobDescription>
               ))}
-              <h2>Jobs Undertaken: {profile.jobs_undertaken.length}</h2>
+              
+              <h2 className="job-classification" onClick={() => setDropdown2((prev) => !prev)}>Jobs Undertaken: {profile.jobs_undertaken.length}</h2>
+              {dropdown2 && profile.jobs_undertaken.map((element) => (
+                <JobDescription key={element._id} job={element} viewOnly={viewOnly}></JobDescription>
+              ))}
             </div>
 
             <div className="reviews-section">

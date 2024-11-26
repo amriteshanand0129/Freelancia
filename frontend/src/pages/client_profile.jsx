@@ -1,3 +1,4 @@
+
 import "../css/Client_Profile.css";
 import React, { useState, useEffect } from "react";
 import { userContext } from "../../context/userContext.jsx";
@@ -10,6 +11,8 @@ const Client_Profile = () => {
   const { user, accessToken, isAuthenticated, isLoading } = userContext();
   const [profile, setProfile] = useState(null);
   const [message, setMessage] = useState(null);
+  const [dropdown1, setDropdown1] = useState(true);
+  const [dropdown2, setDropdown2] = useState(true);
 
   const [formData, setFormData] = useState({
     bio: "",
@@ -51,7 +54,6 @@ const Client_Profile = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -205,11 +207,14 @@ const Client_Profile = () => {
               <div className="bio-content">{profile.bio}</div>
             </div>
             <div className="jobs-section">
-              <h2>Jobs Posted: {profile.jobs_posted.length}</h2>
-              {profile.jobs_posted.map((element) => (
-                <JobDescription key={element._id} job={element} message={message} setMessage={setMessage}></JobDescription>
+              <h2 className="job-classification" onClick={() => setDropdown1((prev) => !prev)}>Jobs Posted: {profile.jobs_posted.length}</h2>
+              { dropdown1 && profile.jobs_posted.map((element) => (
+                <JobDescription key={element._id} job={element} fetchProfile={fetchProfile} message={message} setMessage={setMessage}></JobDescription>
+              ))} 
+              <h2 className="job-classification" onClick={() => setDropdown2((prev) => !prev)}>Jobs Assigned: {profile.jobs_assigned.length}</h2>
+              { dropdown2 && profile.jobs_assigned.map((element) => (
+                <JobDescription key={element._id} job={element} fetchProfile={fetchProfile} message={message} setMessage={setMessage}></JobDescription>
               ))}
-              <h2>Jobs Assigned: {profile.jobs_assigned.length}</h2>
             </div>
 
             <div className="reviews-section">

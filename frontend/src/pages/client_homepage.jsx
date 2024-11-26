@@ -9,6 +9,7 @@ import Buffer from "../components/buffer";
 const Client_Homepage = () => {
   const { accessToken, user, isAuthenticated, isLoading } = userContext();
   const [message, setMessage] = useState(null);
+  const [refreshJobs, setRefreshJobs] = useState(() => () => {});
 
   const postJob = async (event) => {
     event.preventDefault();
@@ -21,11 +22,7 @@ const Client_Homepage = () => {
       preferred_experience: event.target.experience.value,
       working_hours: event.target.working_hours.value,
       wage: event.target.wage.value,
-    };
-
-    const modalElement = document.getElementById("exampleModal");
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-    modalInstance.hide();
+    };    
 
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/postJob`, Job, {
@@ -33,12 +30,16 @@ const Client_Homepage = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
+      refreshJobs();
       setMessage({ message: "Job posted successfully!" });
     } catch (error) {
       console.log("Failed to Post Job", error);
       setMessage({ error: "Failed to post Job!" });
     }
+
+    const modalElement = document.getElementById("exampleModal");
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    modalInstance.hide();
   };
 
   if (!user) {
@@ -53,7 +54,7 @@ const Client_Homepage = () => {
     <>
       {message && <Message message={message} setMessage={setMessage}></Message>}
       <JobPostModal postJob={postJob}></JobPostModal>
-      <JobList></JobList>
+      <JobList setRefreshJobs={setRefreshJobs}></JobList>
     </>
   );
 };

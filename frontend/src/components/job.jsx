@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/Job.css";
 import { userContext } from "../../context/userContext.jsx";
 
 const Job = ({ job, applyJob }) => {
   const { user, accessToken, isAuthenticated, isLoading } = userContext();
+  const [applying, setApplying] = useState(false);
 
   const timeSincePosted = (date) => {
     const diff = Date.now() - new Date(date).getTime();
@@ -55,11 +56,17 @@ const Job = ({ job, applyJob }) => {
       <div className="proposals-count">
         Proposals: <strong>{job.proposals}</strong>
       </div>
-      {user.userType == "FREELANCER" && (
-        <button className="apply-button" onClick={() => applyJob(job._id)}>
+      {user.userType == "FREELANCER" && ( applying == false ? ( <button
+          className="apply-button"
+          onClick={() => {
+            applyJob(job._id);
+            setApplying(true);
+          }}
+        >
           Apply
-        </button>
-      )}
+        </button>) : (
+          <div className="apply-button-buffer"></div>
+        ))}
     </div>
   );
 };

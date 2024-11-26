@@ -4,11 +4,13 @@ import Buffer from "./buffer";
 import axios from "axios";
 import Job from "./job";
 
-const JobList = ({ applyJob }) => {
+const JobList = ({ applyJob, setRefreshJobs }) => {
   const { accessToken, isAuthenticated } = userContext();
   const [jobs, setJobs] = useState([]);
+  const [ fetching, setFetching] = useState(false);
 
   const getJobsList = async () => {
+    setFetching(true);
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/getJobs`, {
         headers: {
@@ -19,6 +21,7 @@ const JobList = ({ applyJob }) => {
     } catch (error) {
       console.error("Error:", error);
     }
+    setFetching(false);
   };
 
   useEffect(() => {
@@ -27,15 +30,22 @@ const JobList = ({ applyJob }) => {
     }
   }, [isAuthenticated]);
 
-  if (jobs.length == 0) {
+  useEffect(() => {
+    setRefreshJobs(() => getJobsList);
+  }, [setRefreshJobs]);
+
+  if (fetching) {
     return <Buffer></Buffer>;
   }
 
   return (
     <div className="jobList">
-      {jobs.map((job) => (
+      {jobs.length > 0 ? (jobs.map((job) => (
         <Job key={job._id} job={job} applyJob={applyJob} />
-      ))}
+      ))) : (
+        <h2>No Jobs Available</h2>
+
+      ) }
     </div>
   );
 };

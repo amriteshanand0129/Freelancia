@@ -42,7 +42,14 @@ const postJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
   try {
-    const jobs = await job_model.find({ assigned: false }).populate("postedBy", "name").sort({ createdAt: -1 });
+    let jobs = await job_model.find({ assigned: false }).populate("postedBy", "name").sort({ createdAt: -1 });
+    if(req.user.userType === "FREELANCER") {
+      const user = await freelancerProfile_model.findOne({auth0_user_id: req.user.sub});
+      if (user && user.jobs_applied && user.jobs_applied.length > 0) {
+        const appliedJobIds = user.jobs_applied.map((jobId) => jobId.toString());
+        jobs = jobs.filter((job) => !appliedJobIds.includes(job._id.toString()));
+      }
+    }
     res.status(200).send({
       jobs: jobs,
     });
@@ -134,27 +141,27 @@ const assignJob = async (req, res) => {
   try {
     const job_id = req.params.job_id;
     const job = await job_model.findOne({ _id: job_id });
-    const employer = await user_model.findOne({ _id: req.user._id });
-    const freelancer_profile = await freelancerProfile_model.findOne({ _id: req.params.user_id });
-    const freelancer = await user_model.findOne({ username: freelancer_profile.username });
+    const client = await clientProfile_model.findOne({ auth0_user_id: req.user.sub });
+    const freelancer = await freelancerProfile_model.findOne({ _id: req.params.user_id });
     const assignedJob = {
       title: job.title,
-      location: job.location,
       description: job.description,
-      working_hours: job.working_hours,
-      preferred_experience: job.preferred_experience,
-      wage: job.wage,
       skills: job.skills,
       qualification: job.qualification,
+      location: job.location,
+      preferred_experience: job.preferred_experience,
+      working_hours: job.working_hours,
+      wage: job.wage,
       postedBy: job.postedBy,
       assignedTo: freelancer._id,
+      assignedFreelancer: freelancer.name,
     };
     const assigned_job_created = await assignedJob_model.create(assignedJob);
     const assigned_job_id = assigned_job_created._id;
-    await freelancerProfile_model.findByIdAndUpdate(freelancer.profile, { $addToSet: { jobsUndertaken: assigned_job_id } }, { new: true });
-    await clientProfile_model.findByIdAndUpdate(employer.profile, { $addToSet: { jobsAssigned: assigned_job_id } }, { new: true });
-    await freelancerProfile_model.findByIdAndUpdate(freelancer.profile, { $pull: { jobsApplied: new mongoose.Types.ObjectId(job_id) } });
-    await clientProfile_model.findByIdAndUpdate(employer.profile, { $pull: { jobsPosted: new mongoose.Types.ObjectId(job_id) } });
+    await freelancerProfile_model.findByIdAndUpdate(freelancer._id, { $addToSet: { jobs_undertaken: assigned_job_id } }, { new: true });
+    await clientProfile_model.findByIdAndUpdate(client._id, { $addToSet: { jobs_assigned: assigned_job_id } }, { new: true });
+    await freelancerProfile_model.findByIdAndUpdate(freelancer._id, { $pull: { jobs_applied: new mongoose.Types.ObjectId(job_id) } });
+    await clientProfile_model.findByIdAndUpdate(client._id, { $pull: { jobs_posted: new mongoose.Types.ObjectId(job_id) } });
     await job_model.findByIdAndUpdate(
       job_id,
       {

@@ -53,3 +53,75 @@ body {
   margin-top: 20px;
   margin-bottom: 0px;
 }
+
+.job-classification {
+  background-color: rgba(183, 183, 183, 0.4);
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+.apply-button-buffer {
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #04c7fc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  bottom: 18px;
+  right: 45px;
+}
+
+.assign-button-buffer {
+  float: right;
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #04c7fc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.post-button-buffer {
+  float: right;
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #04c7fc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+.resourcesOuterBody {
+  width: 90%;
+  height: 65vh;
+  margin: auto;
+  margin-top: 30px;
+  border-radius: 15px;
+  background-image: linear-gradient(to top right, #30cfd0 0%, #330867 100%);
+  color: white;
+  text-align: center;
+}
+
+.resourcesContent {
+  padding-top: 12%;
+}
