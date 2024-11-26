@@ -24,7 +24,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href=".jobList">
+                <a className="nav-link" href="#jobListView">
                   <h5>Jobs</h5>
                 </a>
               </li>

@@ -10,13 +10,28 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
-    
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
+
   <script type="module" src="/src/main.jsx"></script>
+  <script>
+    document.addEventListener("scroll", () => {
+      const div = document.querySelector(".resourcesOuterBody");
+      const startScroll = 0; // Start the effect immediately when scrolling begins
+      const maxScroll = 400; // The total scroll range for the effect
+      const scrollY = window.scrollY - startScroll;
+
+      // Ensure the value stays within bounds
+      const size = Math.max(100 - (scrollY / maxScroll) * 100, 0);
+
+      // Update the clip-path property
+      div.style.clipPath = `circle(${size}% at center)`;
+    });
+
+  </script>
   <title>Freelancia</title>
 </head>
 

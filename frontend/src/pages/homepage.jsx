@@ -41,11 +41,11 @@ const Homepage = () => {
   return (
     <>
       {message && <Message message={message} setMessage={setMessage}></Message>}
-      <div class="resourcesOuterBody">
-            <div class="resourcesContent">
-                <h1>Welcome to Freelancia</h1>
-                <h1>Looking for a Job ? You landed at the right place</h1><br />
-                <h1>Checkout Jobs on Freelancia</h1>
+      <div className="resourcesOuterBody">
+            <div className="resourcesContent">
+                <h1>Welcome to Freelancia</h1><br />
+                <h1>Looking for a Job ? You landed at the right place !</h1><br />
+                <a href="#jobListView" id="jobLink"><h1 id="jobLinkH">Checkout Jobs on Freelancia</h1></a>
             </div>
         </div>
       <JobList applyJob={applyJob} setRefreshJobs={setRefreshJobs}></JobList>

@@ -39,12 +39,19 @@ const JobList = ({ applyJob, setRefreshJobs }) => {
   }
 
   return (
-    <div className="jobList">
-      {jobs.length > 0 ? (jobs.map((job) => (
+    <div className="jobList" id="jobListView">
+      <div className="jobListHeader"><h2>Total Open Postings: {jobs.length}</h2>
+      </div>
+      {isAuthenticated == true ? (jobs.length > 0 ? (jobs.map((job) => (
         <Job key={job._id} job={job} applyJob={applyJob} />
       ))) : (
         <h2>No Jobs Available</h2>
 
+      )) : (
+        <div className="jobListWLogin">
+          <div>☹️Oops! Looks like you are not logged in.</div>
+          <div>Login first to view Jobs</div>
+        </div>
       ) }
     </div>
   );

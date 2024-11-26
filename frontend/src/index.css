@@ -110,18 +110,54 @@ body {
   }
 }
 
-
 .resourcesOuterBody {
-  width: 90%;
-  height: 65vh;
+  color: white;
+  display: flex; /* Enable Flexbox */
+  flex-direction: column; /* Align items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  width: 98%;
+  height: 80vh;
   margin: auto;
   margin-top: 30px;
   border-radius: 15px;
   background-image: linear-gradient(to top right, #30cfd0 0%, #330867 100%);
   color: white;
   text-align: center;
+  clip-path: circle(100% at center);
+  transition: clip-path 0.1s linear;
 }
 
-.resourcesContent {
-  padding-top: 12%;
+.resourcesOuterBody.shrink {
+  clip-path: circle(0% at center);
+}
+
+#jobLink {
+  color: white;
+  text-decoration: none;
+}
+
+#jobLinkH {
+  transition: transform 0.4s ease-in-out, clip-path 0.1s linear;
+}
+
+#jobLinkH:hover {
+  transform: scale(1.05);
+}
+
+.jobListHeader {
+  text-align: center;
+  background-color: rgba(183, 183, 183, 0.4);
+  border-radius: 10px;
+  width: 80%;
+  padding: 20px 20px 10px 20px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.jobListWLogin {
+  text-align: center;
+  margin: 20px;
+  height: 150px;
+  font-size:xx-large;
 }
