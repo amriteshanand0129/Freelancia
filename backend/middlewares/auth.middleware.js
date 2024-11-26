@@ -32,7 +32,7 @@ const validateToken = (req, res, next) => {
       token,
       getKey,
       {
-        audience: "https://localhost:8080",
+        audience: process.env.AUDIENCE,
         issuer: "https://dev-pbblqzx4izdm48nt.us.auth0.com/",
         algorithms: ["RS256"],
       },
