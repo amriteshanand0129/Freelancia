@@ -2,13 +2,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-// import authRoutes from "./routes/auth.route.js";
 import jobRoutes from "./routes/job.route.js";
 import profileRoutes from "./routes/profile.route.js";
 import auth_middleware from "./middlewares/auth.middleware.js";
 
-import job_model from "./models/job.model.js";
-import assignedJob_model from "./models/assignedJob.model.js";
 dotenv.config();
 
 const app = express();
@@ -32,7 +29,6 @@ db.once("open", () => {
 
 app.use(auth_middleware.validateToken);
 
-// authRoutes(app);
 profileRoutes(app);
 jobRoutes(app);
 

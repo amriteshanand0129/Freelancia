@@ -13,7 +13,8 @@ const JobDescription = ({ job, fetchProfile, message, setMessage, viewOnly }) =>
 
   const navigate = useNavigate();
   const visitProfile = (id) => {
-    const modalElement = document.getElementById("applicationsModal");
+    const modal = `applicationsModal${job._id}`;
+    const modalElement = document.getElementById(modal);
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
     modalInstance.hide();
     navigate(`/profile/user/${id}`);
