@@ -127,7 +127,6 @@ const JobDescription = ({ job, fetchProfile, message, setMessage, viewOnly }) =>
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="applicationsModalLabel">
-                {console.log("Applications: ", applications)}
                 Job Applications: {applications.length}
               </h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

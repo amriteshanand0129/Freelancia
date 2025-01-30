@@ -1,6 +1,5 @@
-
-import React, { useState } from "react";
 import "../css/jobPostModal.css";
+import React, { useState } from "react";
 
 const JobPostModal = ({ postJob }) => {
   const [posting, setPosting] = useState(false);
