@@ -1,13 +1,16 @@
 # 🚀 Freelancia – Empowering Freelancers
 
-![GitHub stars](https://img.shields.io/github/stars/amriteshanand0129/Freelancia)
+![GitHub stars](https://img.shields.io/github/stars/amriteshanand0129/Freelancia)<br>
 ![GitHub forks](https://img.shields.io/github/forks/amriteshanand0129/Freelancia)
+<br>
 ![License](https://img.shields.io/github/license/amriteshanand0129/Freelancia)
 
 ## 🌟 About the Project  
 Freelancia is a feature-rich freelancing platform designed to **connect businesses with skilled freelancers** efficiently. This platform ensures **seamless job postings, secure payments, and smooth communication**.
 
-🔗 **Live Demo**: [Freelancia](https://freelancia.onrender.com)  
+🔗 **Live Demo**: [Freelancia on Render](https://freelancia.onrender.com)  
+
+_Please note that the website may take up to 50 seconds to load initially. This delay occurs because the backend server enters a dormant state after a period of inactivity._
 
 ### ✨ Key Features  
 - 📝 Post & Find Freelance Jobs – Clients can post jobs, and freelancers can bid on projects.
