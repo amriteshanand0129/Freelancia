@@ -54,12 +54,10 @@ const Navbar = () => {
                     <li>
                       <a
                         className="dropdown-item"
-                        href="/"
                         onClick={() =>
                           logout({
                             logoutParams: {
                               returnTo: window.location.origin,
-                              federated: true,
                             },
                           })
                         }
